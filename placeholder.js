@@ -37,16 +37,8 @@ function placeholder(options){
 	this.placeholderClass = options.placeholderClass || "placeholder";
 	this.passFixClass = options.passFixClass;
 
-	if(this.input.attr("type") == "password" && !this.typeModifySupport){
-		this._createPasswordPlaceholderFix();
-
-		$(this.input[0].form).submit(function(){
-			me.passwordFix.remove();
-			this.input.show();
-		});
-	}
-
 	this.initPlaceholder();
+	
 }
 
 placeholder.prototype = 
@@ -63,12 +55,22 @@ placeholder.prototype =
 		//Attention:IE在onload时会将浏览器记忆的值填入input控件中；如果在onload之前设置input的值，在onload后仍然会被设置成浏览器记忆的值
 		if($.browser.msie){
 			$().ready(function(){
-				console.log(input.val());
 				(input.val() == '' || input.val() == input.attr("placeholder")) && me.show();
 			});
 		}else{
 			(input.val() == '') && me.show();
 		}
+		
+		//创建模拟password控件placeholder效果的input
+		if(this.input.attr("type") == "password" && !this.typeModifySupport){
+            var me = this;
+            me._createPasswordPlaceholderFix();
+    
+            $(me.input[0].form).submit(function(){
+                me.passwordFix.remove();
+                me.input.show();
+            });
+        }
 
 		input.blur(function(){
 			input.val() == '' && me.show();
@@ -77,7 +79,7 @@ placeholder.prototype =
 		input.focus(function(){
 			me.valueIsPlaceholder() && me.hide();
 
-			if($.browser.msie && input.attr("type") == "password"){
+			if(!this.typeModifySupport && input.attr("type") == "password"){
 				if(input.val() ==""){
 	                //解决IE里面光标丢失的问题
 	                setTimeout(function(){
@@ -86,7 +88,14 @@ placeholder.prototype =
 				}
 			}
 		});
-
+        
+        //提交表单时，清除控件中的placeholder值
+        $(input[0].form).submit(function(){
+            if(me.valueIsPlaceholder()){
+                input.val("");
+            }
+        });
+        
 	}
     
     /**
