@@ -13,8 +13,18 @@ if(console == undefined){
 	}
 }
 
+/**
+ * placeholder类
+ * @class
+ * @name placeholder
+ * @grammar new placeholder()
+ * @param {Object} options 配置参数
+ * @config {$|String|HTMLElement} input input/textarea控件
+ * @config {String} placeholderClass 显示placeholder时，控件的class名
+ * @config {String} passFixClass 模拟password控件placeholder效果的input的class名，用于设置样式，以保证它跟password控件的样式一样
+ */
 
-function placeholder(option){
+function placeholder(options){
 	if("placeholder" in document.createElement("input"))
 		return;
 
@@ -23,8 +33,9 @@ function placeholder(option){
 	}
 	this.typeModifySupport = placeholder.typeModifySupport;
 
-	this.input = $(option.input);
-	this.placeholderClass = option.classname || "placeholder";
+	this.input = $(options.input);
+	this.placeholderClass = options.placeholderClass || "placeholder";
+	this.passFixClass = options.passFixClass;
 
 	if(this.input.attr("type") == "password" && !this.typeModifySupport){
 		this._createPasswordPlaceholderFix();
@@ -38,8 +49,13 @@ function placeholder(option){
 	this.initPlaceholder();
 }
 
-placeholder.prototype = {
-
+placeholder.prototype = 
+/** @lends placeholder.prototype */
+{
+    
+    /**
+     * 初始化placeholder
+     */
 	initPlaceholder: function(){
 		var me = this,
 			input = this.input;
@@ -63,11 +79,6 @@ placeholder.prototype = {
 
 			if($.browser.msie && input.attr("type") == "password"){
 				if(input.val() ==""){
-					// var range = input[0].createTextRange();
-                    // range.collapse(true);
-                    // range.moveStart('character', 0);
-                    // range.select();
-
 	                //解决IE里面光标丢失的问题
 	                setTimeout(function(){
 	                	input[0].focus();
@@ -77,7 +88,10 @@ placeholder.prototype = {
 		});
 
 	}
-
+    
+    /**
+     * 显示placeholder
+     */
 	,show: function(){
 		var me = this,
 			input = me.input;
@@ -96,7 +110,10 @@ placeholder.prototype = {
 		input.val(input.attr("placeholder"));
 		input.addClass(me.placeholderClass);
 	}
-
+    
+    /**
+     * 隐藏placeholder
+     */
 	,hide: function(){
 		var me = this,
 			input = me.input;
@@ -109,12 +126,18 @@ placeholder.prototype = {
 		input.val("");
 		input.removeClass(me.placeholderClass);
 	}
-
+    
+    /**
+     * 判断控件中的值是否是placeholder
+     */
 	,valueIsPlaceholder: function(){
 		var input = this.input;
 		return input.val() == input.attr("placeholder") && input.hasClass(this.placeholderClass);
 	}
-
+    
+    /**
+     * 测试浏览器是否支持修改控件的type
+     */
 	,_testTypeModifySupport: function(){
 
 		//Chrome、Firefox、IE9都能通过改变type将密码输入框变成普通输入框，而IE8、IE7虽然可以通过setAttribute重设type，但是修改后表象仍然是password型，IE6完全无法改变type的值。
@@ -132,14 +155,27 @@ placeholder.prototype = {
 		console.log("typeModifySupport:" + (type == "text"));
 		return type == "text";	// Chrome、Firefox、IE9 returns true, else false.
 	}
-
+    
+    /**
+     * 创建一个input用来模拟password控件的placeholder
+     */
 	,_createPasswordPlaceholderFix: function(){
 		var me = this,
 			input = me.input,
 			html;
-		if($.browser.msie && input[0].outerHTML){
+
+		if(input[0].outerHTML){
 			html = $(input[0].outerHTML.replace(/type=(['"])?password\1/gi, "type=$1text$1"));
+		}else{
+		    html = $('<input type="text" />');
+		    
+		    //复制class和style，以保证样式一致
+		    html.attr("class", input.attr("class"));
+		    html.attr("style", input.attr("style"));
+		}
 			html.addClass(me.placeholderClass);
+			me.passFixClass && html.addClass(me.passFixClass);
+			
 			html.val(input.attr("placeholder"));
 			html.attr("id", "");	//去掉可能存在的id
 			html.focus(function(){
@@ -147,7 +183,6 @@ placeholder.prototype = {
 				input.trigger("focus");
 				input.show();
 			});
-		}
 		me.passwordFix = html;
 	}
 
