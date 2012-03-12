@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>placeholder demo</title>
+		<style type="text/css">
+			.placeholder {
+				color: #666;
+			}
+		</style>
+		<script type="text/javascript" src="./jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="./placeholder.js"></script>
+	</head>
+	<body>
+		<form id="J_form" action="./test.php" method="get">
+			<input type="text" id="J_name" placeholder="请输入姓名" /><br />
+			<input type="password" id="J_pass" placeholder="请输入密码" /><br />
+			<textarea id="J_area" placeholder="请输入简介" ></textarea><br />
+			<input type="submit" id="J_button" value="submit" />
+		</form>
+
+		<script type="text/javascript">
+			// console.log($("#J_name").val());
+		</script>
+		<iframe src="http://www.baidu.com" frameBorder="0"></iframe>
+		<script type="text/javascript">
+
+			new placeholder({
+				'input': $("#J_name")
+			});
+			new placeholder({
+				'input': $("#J_pass")
+			});
+			new placeholder({
+				'input': $("#J_area")
+			});
+			// $().ready(function(){
+			// 	console.log($("#J_name").val());
+			// });
+		</script>
+	</body>
+</html>
