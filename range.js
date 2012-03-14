@@ -66,8 +66,11 @@ range.prototype =
 	    var me = this,
 	       range = me.range,
 	       range_handle = range.find(".range-handle");
+	    me.range_handle = range_handle;
 
-	    range.click(me._rangeClickHandle);
+	    range.click(function(e){
+	    	me._rangeClickHandle.call(me, e);
+	    });
 
 
 	    range_handle.mouseover(function(){
@@ -82,6 +85,9 @@ range.prototype =
 	 * 响应在控件上的点击事件
 	 */
 	,_rangeClickHandle: function(e){
+		var me = this,
+			range_handle = me.range_handle;
+
 	    range_handle.css("left", me._transferCoord(e.clientX) + "px");
 	}
 
