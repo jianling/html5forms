@@ -1,0 +1,23 @@
+
+
+.range {
+	position: relative;
+	background: url("./range/slider_h_bg.gif") repeat-x 0 0;
+    height: 5px;
+    margin: 10px 0 10px 10px;
+    border-radius: 4px 4px 4px 4px;
+}
+
+.range-handle {
+	position: absolute;
+	left: 0;
+	top: -9px;
+	margin-left: -11px;
+	background: url("./range/slider_handles.png") no-repeat scroll 0 -23px transparent;
+    height: 23px;
+    width: 23px;
+    border-radius: 4px 4px 4px 4px;
+}
+.range-handle-hover {
+	background-position: 0 0;
+}

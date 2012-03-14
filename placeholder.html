@@ -3,19 +3,25 @@
 	<head>
 		<meta charset="utf-8">
 		<title>placeholder demo</title>
+		<link rel="stylesheet" type="text/css" href="./range.css" />
 		<style type="text/css">
+			form {
+				margin: 50px;
+			}
 			.placeholder {
 				color: #666;
 			}
 		</style>
 		<script type="text/javascript" src="./jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="./placeholder.js"></script>
+		<script type="text/javascript" src="./range.js"></script>
 	</head>
 	<body>
 		<form id="J_form" action="./test.php" method="get">
+			<p><input type="range" name="range-slider" id="range-slider" class="slider"  value="20" style="width:200px;"></p>
 			<input type="text" id="J_name" placeholder="请输入姓名" name="my_name" /><br />
-			<input type="password" id="J_pass" placeholder="请输入密码" class="pass" style="border:1px solid red;" /><br />
-			<textarea id="J_area" placeholder="请输入简介" ></textarea><br />
+			<input type="password" id="J_pass" placeholder="请输入密码" name="my_pass" class="pass" style="border:1px solid red;" /><br />
+			<textarea id="J_area" placeholder="请输入简介" name="my_area"></textarea><br />
 			<input type="submit" id="J_button" value="submit" />
 		</form>
 
@@ -37,7 +43,9 @@
 			// $().ready(function(){
 			// 	console.log($("#J_name").val());
 			// });
-
+			
+			var ran = new range("#range-slider");
+			ran.create();
 		</script>
 	</body>
 </html>
