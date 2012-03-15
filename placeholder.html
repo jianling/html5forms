@@ -18,7 +18,7 @@
 	</head>
 	<body>
 		<form id="J_form" action="./test.php" method="get">
-			<p><input type="range" name="range-slider" id="range-slider" class="slider"  value="20" style="width:200px;"></p>
+			<p><input type="text" name="range-slider" id="range-slider" class="slider" max="99" min="1" step="20" value="21" style="width:200px;"></p>
 			<input type="text" id="J_name" placeholder="请输入姓名" name="my_name" /><br />
 			<input type="password" id="J_pass" placeholder="请输入密码" name="my_pass" class="pass" style="border:1px solid red;" /><br />
 			<textarea id="J_area" placeholder="请输入简介" name="my_area"></textarea><br />
@@ -28,7 +28,6 @@
 		<script type="text/javascript">
 			// console.log($("#J_name").val());
 		</script>
-		<iframe src="http://www.baidu.com" frameBorder="0"></iframe>
 		<script type="text/javascript">
 
 			new placeholder({
