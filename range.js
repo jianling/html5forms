@@ -93,11 +93,31 @@ range.prototype =
 	    });
 
 	    $(document.body).click(function(e){
-	    	if(e.target()){
-	    		me.active = false;
-	    	}
-	    }).keypress(function(e){
 
+	    	if(!$.contains(range[0], e.target) && e.target != range[0]){
+	    		me.active = false;
+	    		return;
+	    	}
+
+	    }).keyup(function(e){
+	    	if(!me.active)	//如果range控件不处于激活状态，则返回
+	    		return;
+
+	    	switch(e.which){
+	    		case 37:	//left
+	    			me.setValue(me.getValue() - me.option.step);
+	    			break;
+	    		case 39:	//right
+	    			me.setValue(me.getValue() + me.option.step);
+	    			break;
+	    		default:
+	    			break;
+	    	}
+	    });
+
+	    $(window).blur(function(){
+	    	me.active = false;
+    		return;
 	    });
 	}
 	
@@ -144,6 +164,6 @@ range.prototype =
 	 * 获取range的值
 	 */
 	,getValue: function(){
-	    
+	    return this.currentValue;
 	}
 }
