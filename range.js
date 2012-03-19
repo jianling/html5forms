@@ -93,32 +93,55 @@ range.prototype =
 	    });
 
 	    $(document.body).click(function(e){
-
 	    	if(!$.contains(range[0], e.target) && e.target != range[0]){
 	    		me.active = false;
 	    		return;
 	    	}
-
-	    }).keyup(function(e){
-	    	if(!me.active)	//如果range控件不处于激活状态，则返回
-	    		return;
-
-	    	switch(e.which){
-	    		case 37:	//left
-	    			me.setValue(me.getValue() - me.option.step);
-	    			break;
-	    		case 39:	//right
-	    			me.setValue(me.getValue() + me.option.step);
-	    			break;
-	    		default:
-	    			break;
-	    	}
 	    });
+
+	    me._keyboardHandler();
 
 	    $(window).blur(function(){
 	    	me.active = false;
     		return;
 	    });
+	}
+
+	/**
+	 * 响应键盘事件
+	 */
+	,_keyboardHandler: function(){
+		var me = this,
+			step = me.option.step,
+			timer,
+			pause = false;
+
+
+		$(document.body).keydown(function(e){
+	    	if(!me.active || pause)	//如果range控件不处于激活状态或者处于连续移动中的暂停状态，则返回
+	    		return;
+
+	    	if(e.which != 37 && e.which != 39)	//不响应除了左右键以外的键盘按键
+	    		return;
+
+	    	timer = setTimeout(function(){
+	    		pause = false;
+	    	}, 100);
+	    		
+
+	    	if(!pause){
+	    		e.which == 37 ? me.setValue(me.getValue() - step) : me.setValue(me.getValue() + step);
+	    		pause = true;
+	    	}
+	    	e.preventDefault();//阻止默认事件，比如页面横向滚动等
+
+	    }).keyup(function(e){
+	    	if(e.which != 37 && e.which != 39)	//不响应除了左右键以外的键盘按键
+	    		return;
+	    	e.which == 37 ? me.setValue(me.getValue() - step) : me.setValue(me.getValue() + step);
+	    	pause = false;
+	    	clearTimeout(timer);
+	    })
 	}
 	
 	/**
