@@ -42,7 +42,15 @@
 			// 	console.log($("#J_name").val());
 			// });
 			
+
+			//创建range控件
 			var ran = new range("#range-slider");
+			
+
+			$(ran).bind("valueUpdate", function(e, value){
+				console.log("new value:" + value);
+			});
+
 			ran.create();
 		</script>
 	</body>

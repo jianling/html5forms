@@ -138,7 +138,7 @@ range.prototype =
 	    }).keyup(function(e){
 	    	if(e.which != 37 && e.which != 39)	//不响应除了左右键以外的键盘按键
 	    		return;
-	    	e.which == 37 ? me.setValue(me.getValue() - step) : me.setValue(me.getValue() + step);
+	    	// e.which == 37 ? me.setValue(me.getValue() - step) : me.setValue(me.getValue() + step);
 	    	pause = false;
 	    	clearTimeout(timer);
 	    })
@@ -181,6 +181,9 @@ range.prototype =
 	    me.range_handle.css("left",  left+ "px");
 
 	    me.input.val(realValue);
+
+	    //TODO 触发自定义事件
+	    $(me).trigger("valueUpdate", realValue);
 	}
 	
 	/**
