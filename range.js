@@ -6,14 +6,6 @@
  */
 
 
-//TODO 在handle上显示个当前值什么的
-
-if(console == undefined){
-	var console = {
-		log: function(){}
-	}
-}
-
 /**
  * range
  * @class
@@ -35,6 +27,8 @@ function range(el){
     this.keyCode = {
     	'LEFT': 37,
     	'RIGHT': 39,
+    	'UP': 38,
+    	'DOWN': 40,
     	'HOME': 36,
     	'END': 35
     };
@@ -135,6 +129,7 @@ range.prototype =
 			};
 
 		range_handle.mousedown(function(){
+			me.active = true;
 			$(document).bind("mousemove", getMousePosition);
 			$(document).bind("selectstart", function(e){
 				e.preventDefault();
@@ -178,7 +173,7 @@ range.prototype =
 		    		pause = false;
 		    	}, 100);
 		    		
-	    		e.which == me.keyCode["LEFT"] ? me.setValue(me.getValue() - step) : me.setValue(me.getValue() + step);
+	    		(e.which == me.keyCode["LEFT"] || e.which == me.keyCode["DOWN"]) ? me.setValue(me.getValue() - step) : me.setValue(me.getValue() + step);
 	    		pause = true;
 			};
 
@@ -197,6 +192,8 @@ range.prototype =
 	    			 break;
 	    		case me.keyCode["LEFT"]:
 	    		case me.keyCode["RIGHT"]:
+	    		case me.keyCode["UP"]:
+	    		case me.keyCode["DOWN"]:
 	    			 arrowKeyHandler(e);
 	    			 break;
 	    		default:
@@ -258,4 +255,4 @@ range.prototype =
 	,getValue: function(){
 	    return this.currentValue;
 	}
-}
+};

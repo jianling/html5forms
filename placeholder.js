@@ -6,13 +6,6 @@
  */
 
 
-
-if(console == undefined){
-	var console = {
-		log: function(){}
-	}
-}
-
 /**
  * placeholder类
  * @class
@@ -161,7 +154,6 @@ placeholder.prototype =
 		type = input.type;
 		document.body.removeChild(input);
 
-		console.log("typeModifySupport:" + (type == "text"));
 		return type == "text";	// Chrome、Firefox、IE9 returns true, else false.
 	}
     
