@@ -32,6 +32,13 @@ function range(el){
         'value': Number(this.input.attr("value")) || 0
     };
 
+    this.keyCode = {
+    	'LEFT': 37,
+    	'RIGHT': 39,
+    	'HOME': 36,
+    	'END': 35
+    };
+
 }
 
 range.prototype =
@@ -78,7 +85,7 @@ range.prototype =
 	    	var max = me.option.max,
 		    	min = me.option.min,
 		    	step = me.option.step;
-	    		_value = me._transferCoord(e.clientX) * (max - min) / me.range_length;
+	    		_value = me._transferCoord(e.pageX) * (max - min) / me.range_length;
 
 	    	me.setValue(_value);
 
@@ -100,6 +107,7 @@ range.prototype =
 	    });
 
 	    me._keyboardHandler();
+	    me._mouseHandler();
 
 	    $(window).blur(function(){
 	    	me.active = false;
@@ -108,40 +116,98 @@ range.prototype =
 	}
 
 	/**
+	 * 响应鼠标事件
+	 */
+	,_mouseHandler: function(){
+		var me = this,
+			max = me.option.max,
+	    	min = me.option.min,
+			step = me.option.step,
+			range_handle = me.range_handle,
+			mouseX,
+			mouseY,
+			timer,
+			_value,
+			mozUserSelect,
+			getMousePosition = function(e){
+				mouseX = e.pageX;
+				mouseY = e.pageY;
+			};
+
+		range_handle.mousedown(function(){
+			$(document).bind("mousemove", getMousePosition);
+			$(document).bind("selectstart", function(e){
+				e.preventDefault();
+			});
+
+			timer = setInterval(function(){
+				_value = me._transferCoord(mouseX) * (max - min) / me.range_length;
+		    	me.setValue(_value);
+			}, 10);
+
+			//取消mozilla的文本选中状态
+			mozUserSelect = document.body.style.MozUserSelect;
+        	document.body.style.MozUserSelect = 'none';
+		});
+
+		$(window).mouseup(function(){
+			$(document).unbind("mousemove", getMousePosition);
+			clearInterval(timer);
+
+			//恢复mozilla的文本选中状态
+			document.body.style.MozUserSelect = mozUserSelect;
+		});
+
+	}
+
+	/**
 	 * 响应键盘事件
 	 */
 	,_keyboardHandler: function(){
 		var me = this,
+			min = me.option.min,
+			max = me.option.max,
 			step = me.option.step,
 			timer,
-			pause = false;
+			pause = false,
+			arrowKeyHandler = function(e){
+				if(pause)	//如果range控件处于连续移动中的暂停状态，则返回
+		    		return;
+
+		    	timer = setTimeout(function(){
+		    		pause = false;
+		    	}, 100);
+		    		
+	    		e.which == me.keyCode["LEFT"] ? me.setValue(me.getValue() - step) : me.setValue(me.getValue() + step);
+	    		pause = true;
+			};
 
 
 		$(document.body).keydown(function(e){
-	    	if(!me.active || pause)	//如果range控件不处于激活状态或者处于连续移动中的暂停状态，则返回
-	    		return;
+			//如果range控件不处于激活状态，不响应任何按键
+			if(!me.active)	
+				return;
 
-	    	if(e.which != 37 && e.which != 39)	//不响应除了左右键以外的键盘按键
-	    		return;
-
-	    	timer = setTimeout(function(){
-	    		pause = false;
-	    	}, 100);
-	    		
-
-	    	if(!pause){
-	    		e.which == 37 ? me.setValue(me.getValue() - step) : me.setValue(me.getValue() + step);
-	    		pause = true;
+	    	switch(e.which){
+	    		case me.keyCode["HOME"]:
+	    			 me.setValue(min);
+	    			 break;
+	    		case me.keyCode["END"]:
+	    			 me.setValue(max);
+	    			 break;
+	    		case me.keyCode["LEFT"]:
+	    		case me.keyCode["RIGHT"]:
+	    			 arrowKeyHandler(e);
+	    			 break;
+	    		default:
+	    			return;
 	    	}
 	    	e.preventDefault();//阻止默认事件，比如页面横向滚动等
 
 	    }).keyup(function(e){
-	    	if(e.which != 37 && e.which != 39)	//不响应除了左右键以外的键盘按键
-	    		return;
-	    	// e.which == 37 ? me.setValue(me.getValue() - step) : me.setValue(me.getValue() + step);
 	    	pause = false;
-	    	clearTimeout(timer);
-	    })
+	    	timer && clearTimeout(timer);
+	    });
 	}
 	
 	/**
@@ -165,9 +231,9 @@ range.prototype =
 	    	left = 0,
 	    	realValue = 0;
 
-	    if(value > max || value < min){
-	    	return false;
-	    }
+	    //如果值超出边界时，将其设置为边界值
+	    (value > max) && (value = max);
+	    (value < min) && (value = min);
 
 	    realValue = Math.round((value - min)/step) * step + min;
 
@@ -182,7 +248,7 @@ range.prototype =
 
 	    me.input.val(realValue);
 
-	    //TODO 触发自定义事件
+	    // 触发自定义事件
 	    $(me).trigger("valueUpdate", realValue);
 	}
 	
