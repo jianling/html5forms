@@ -119,16 +119,15 @@ range.prototype =
 			step = me.option.step,
 			range_handle = me.range_handle,
 			mouseX,
-			mouseY,
 			timer,
 			_value,
 			mozUserSelect,
 			getMousePosition = function(e){
 				mouseX = e.pageX;
-				mouseY = e.pageY;
 			};
 
-		range_handle.mousedown(function(){
+		range_handle.mousedown(function(e){
+			mouseX = e.pageX;
 			me.active = true;
 			$(document).bind("mousemove", getMousePosition);
 			$(document).bind("selectstart", function(e){
@@ -145,7 +144,7 @@ range.prototype =
         	document.body.style.MozUserSelect = 'none';
 		});
 
-		$(window).mouseup(function(){
+		$([window, document]).mouseup(function(){
 			$(document).unbind("mousemove", getMousePosition);
 			clearInterval(timer);
 
