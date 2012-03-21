@@ -48,7 +48,7 @@ placeholder.prototype =
 		//Attention:IE在onload时会将浏览器记忆的值填入input控件中；如果在onload之前设置input的值，在onload后仍然会被设置成浏览器记忆的值
 		if($.browser.msie){
 			$().ready(function(){
-				(input.val() == '' || input.val() == input.attr("placeholder")) && me.show();
+				(input.val() == '') && me.show();
 			});
 		}else{
 			(input.val() == '') && me.show();
