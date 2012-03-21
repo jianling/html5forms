@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>range</title>
+		<link rel="stylesheet" type="text/css" href="../assets/range.css" />
+		<style type="text/css">
+			form {
+				margin: 50px;
+			}
+			.placeholder {
+				color: #666;
+			}
+		</style>
+		<script type="text/javascript" src="../lib/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../ui/range.js"></script>
+	</head>
+	<body>
+		<form id="J_form" action="./range.php" method="POST">
+			<fieldset>
+				<p>提供min(1)、max(99)、step(3)、value(0)属性</p>
+				<p><input type="range" name="range-slider" id="range-slider1" class="slider" max="99" min="1" step="3" value="0" style="width:200px;"></p>
+				<p><label for="J_field1">年龄：<input type="text" id="J_field1" /></label></p>
+			</fieldset>
+			<fieldset>
+				<p>提供min(1)、step(3)、value(120)属性</p>
+				<p><input type="range" name="range-slider" id="range-slider2" class="slider" min="1" step="3" value="120" style="width:200px;"></p>
+				<p><label for="J_field2">年龄：<input type="text" id="J_field2" /></label></p>
+			</fieldset>
+			<fieldset>
+				<p>提供max(99)、step(3)、value(22)属性</p>
+				<p><input type="range" name="range-slider" id="range-slider3" class="slider" max="99" step="3" value="21" style="width:200px;"></p>
+				<p><label for="J_field3">年龄：<input type="text" id="J_field3" /></label></p>
+			</fieldset>
+			<fieldset>
+				<p>提供min(1)、max(99)、value(56.5)属性</p>
+				<p><input type="range" name="range-slider" id="range-slider4" class="slider" max="99" min="1" value="56.5" style="width:200px;"></p>
+				<p><label for="J_field4">年龄：<input type="text" id="J_field4" /></label></p>
+			</fieldset>
+			<fieldset>
+				<p>提供step(3)、value(22)属性</p>
+				<p><input type="range" name="range-slider" id="range-slider5" class="slider" step="3" value="22" style="width:200px;"></p>
+				<p><label for="J_field5">年龄：<input type="text" id="J_field5" /></label></p>
+			</fieldset>
+			<fieldset>
+				<p>提供value属性(235)</p>
+				<p><input type="range" name="range-slider" id="range-slider6" class="slider" value="235" style="width:200px;"></p>
+				<p><label for="J_field6">年龄：<input type="text" id="J_field6" /></label></p>
+			</fieldset>
+			<fieldset>
+				<p>不提供value</p>
+				<p><input type="range" name="range-slider" id="range-slider7" class="slider" max="8" step="3" style="width:200px;"></p>
+				<p><label for="J_field7">年龄：<input type="text" id="J_field7" /></label></p>
+			</fieldset>
+			<input type="submit" id="J_button" value="submit" />
+		</form>
+		<script type="text/javascript">
+			//创建range控件
+			var ran1 = new range("#range-slider1");
+			$(ran1).bind("valueUpdate", function(e, value){
+				$("#J_field1").val(value);
+			});
+			ran1.create();
+
+			//创建range控件
+			var ran2 = new range("#range-slider2");
+			$(ran2).bind("valueUpdate", function(e, value){
+				$("#J_field2").val(value);
+			});
+			ran2.create();
+
+			//创建range控件
+			var ran3 = new range("#range-slider3");
+			$(ran3).bind("valueUpdate", function(e, value){
+				$("#J_field3").val(value);
+			});
+			ran3.create();
+
+			//创建range控件
+			var ran4 = new range("#range-slider4");
+			$(ran4).bind("valueUpdate", function(e, value){
+				$("#J_field4").val(value);
+			});
+			ran4.create();
+
+			//创建range控件
+			var ran5 = new range("#range-slider5");
+			$(ran5).bind("valueUpdate", function(e, value){
+				$("#J_field5").val(value);
+			});
+			ran5.create();
+
+			//创建range控件
+			var ran6 = new range("#range-slider6");
+			$(ran6).bind("valueUpdate", function(e, value){
+				$("#J_field6").val(value);
+			});
+			ran6.create();
+
+			//创建range控件
+			var ran7 = new range("#range-slider7");
+			$(ran7).bind("valueUpdate", function(e, value){
+				$("#J_field7").val(value);
+			});
+			ran7.create();
+		</script>
+	</body>
+</html>

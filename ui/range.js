@@ -20,9 +20,9 @@ function range(el){
     this.option = {
         'max': Number(this.input.attr("max")) || 100,
         'min': Number(this.input.attr("min")) || 0,
-        'step': Number(this.input.attr("step")) || 1,
-        'value': Number(this.input.attr("value")) || 0
+        'step': Number(this.input.attr("step")) || 1
     };
+    this.option.value =  Number(this.input.attr("value")) || (this.option.max - this.option.min)/2;	//没有设置默认的value时，Chrome默认是max和min的中间值
 
     this.keyCode = {
     	'LEFT': 37,
@@ -212,7 +212,7 @@ range.prototype =
 	 * @return {Number} 鼠标在range控件点击的横坐标
 	 */
 	,_transferCoord: function(pageX){
-		return pageX - this.range.position().left - Number(ran.range.css("marginLeft").replace("px",''));
+		return pageX - this.range.position().left - Number(this.range.css("marginLeft").replace("px",''));
 	}
 	
 	/**

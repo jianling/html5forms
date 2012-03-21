@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>placeholder demo</title>
-		<link rel="stylesheet" type="text/css" href="./range.css" />
+		<title>placeholder</title>
+		<link rel="stylesheet" type="text/css" href="../assets/range.css" />
 		<style type="text/css">
 			form {
 				margin: 50px;
@@ -12,14 +12,11 @@
 				color: #666;
 			}
 		</style>
-		<script type="text/javascript" src="./jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="./placeholder.js"></script>
-		<script type="text/javascript" src="./range.js"></script>
+		<script type="text/javascript" src="../lib/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../ui/placeholder.js"></script>
 	</head>
 	<body>
-		<form id="J_form" action="./test.php" method="get">
-			<p><input type="text" name="range-slider" id="range-slider" class="slider" max="99" min="1" step="3" value="21" style="width:200px;"></p>
-			<p><label for="J_age">年龄<input type="text" id="J_age" /></label></p>
+		<form id="J_form" action="./placeholder.php" method="POST">
 			<input type="text" id="J_name" placeholder="请输入姓名" name="my_name" /><br />
 			<input type="password" id="J_pass" placeholder="请输入密码" name="my_pass" class="pass" style="border:1px solid red;" /><br />
 			<textarea id="J_area" placeholder="请输入简介" name="my_area"></textarea><br />
@@ -43,15 +40,6 @@
 			// 	console.log($("#J_name").val());
 			// });
 			
-
-			//创建range控件
-			var ran = new range("#range-slider");
-
-			$(ran).bind("valueUpdate", function(e, value){
-				$("#J_age").val(value);
-			});
-
-			ran.create();
 		</script>
 	</body>
 </html>
